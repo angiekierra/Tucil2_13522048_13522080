@@ -1,57 +1,63 @@
-# def bezier_curve(controlpoints,iteration):
-#     if iteration == 0:
-#         return controlpoints
-#     else:
-        
-#         left_mid = mid_point(controlpoints[0],controlpoints[1])
-#         right_mid = mid_point(controlpoints[1],controlpoints[2])
-#         mids = mid_point(left_mid,right_mid)
-
-#         left_curve = [controlpoints[0],left_mid,mids]
-#         right_curve = [mids,right_mid,controlpoints[-1]]
-
-#         left = bezier_curve(left_curve,iteration-1)
-#         right = bezier_curve(right_curve,iteration-1)
-
-#         return left + right
-
 import matplotlib.pyplot as plt
-def get_mid_point(point1,point2):
+
+def mid_point(point1, point2):
     return (point1[0] + point2[0]) / 2, (point1[1] + point2[1]) / 2
 
-def general_bezier(control_points,iterations):
-    degree = len(control_points) -1
+def bezier_curve(controlpoints, iteration):
+    if iteration == 0:
+        return [controlpoints[0], mid_point(controlpoints[0], controlpoints[-1]), controlpoints[-1]]
+    else:
+        left_mid = mid_point(controlpoints[0], controlpoints[1])
+        right_mid = mid_point(controlpoints[1], controlpoints[2])
+        mids = mid_point(left_mid, right_mid)
 
-    if (degree == 1 or iterations == 0):
-        return [control_points[0], control_points[-1]]
+        left_curve = [controlpoints[0], left_mid, mids]
+        right_curve = [mids, right_mid, controlpoints[-1]]
+
+        left = bezier_curve(left_curve, iteration - 1)
+        right = bezier_curve(right_curve, iteration - 1)
+
+        return left + right
     
-    mid_index = degree // 2
+def n_bezier_curve(controlpoints, iteration):
+    if iteration == 0:
+        return controlpoints
+    else:
+        if len(controlpoints) == 3:
+            return bezier_curve(controlpoints, iteration - 1)
+        
+        middle = len(controlpoints) // 2
+        if (len(controlpoints) % 2 == 0):
+            mid = mid_point(controlpoints[middle], controlpoints[middle + 1])  
+            left_segment = controlpoints[:middle + 1] + [mid]  
+            right_segment = [mid] + controlpoints[middle:]  
+        else:
+            left_segment = controlpoints[:middle + 1]
+            right_segment = controlpoints[middle:]
+        
+        
+        left = n_bezier_curve(left_segment, iteration - 1)
+        right = n_bezier_curve(right_segment, iteration - 1)
 
-    if (degree % 2 != 0): # klo dia control pointnya genap 
-        mid_point = get_mid_point(control_points[mid_index] + control_points[mid_index+1])
-        left_segment = control_points[:mid_index+1] + [mid_point]
-        right_segment = [mid_point] + control_points[mid_index+1:]
-    else: # klo dia control poinnya genap
-        left_segment = control_points[:mid_index+1]
-        right_segment = control_points[mid_index:]
 
-    left_curve = general_bezier(left_segment, iterations-1)
-    right_curve = general_bezier(right_segment, iterations -1)
+        return left + right
 
-    return left_curve + right_curve
+def plot_curve(curve_points):
+    x = [p[0] for p in curve_points]
+    y = [p[1] for p in curve_points]
+    plt.plot(x, y, marker='o')
 
 
+control_points = [(0, 0), (1, 2), (3, 1), (4, 3), (5, 0),(6,7),(2,7)]
+iterations = 10
+curve_points = n_bezier_curve(control_points, iterations)
 
-control_points = [(1, 1), (2, 4), (5, 6), (7, 3), (9, 8)]
-iterations = 5
+plot_curve(control_points)
+plot_curve(curve_points)
 
-curve_points = general_bezier(control_points, iterations)
-
-x_points = [point[0] for point in curve_points]
-y_points = [point[1] for point in curve_points]
-plt.plot(x_points, y_points, marker='o', linestyle='-')
 plt.title('Bezier Curve')
-plt.xlabel('X')
-plt.ylabel('Y')
+plt.xlabel('X-axis')
+plt.ylabel('Y-axis')
 plt.grid(True)
+plt.gca().set_aspect('equal', adjustable='box')
 plt.show()
