@@ -23,16 +23,14 @@ def bezier_curve(controlpoints, iteration):
 
         return left + right
     
-test = [(6,2),(2,4),(7,15)]
-it = 10
+test = [(1,2),(5,4),(7,2)]
+it = 13
 res = bezier_curve(test,it)
 print(res)
-# Generate Bezier curve points
 curve_points = bezier_curve(test, it)
 curve_x, curve_y = zip(*curve_points)
 control_x, control_y = zip(*test)
 
-# Plot Bezier curve and control points
 plt.plot(curve_x, curve_y, label='Bezier Curve')
 plt.scatter(control_x, control_y, color='red', label='Control Points')
 plt.title('Bezier Curve')
