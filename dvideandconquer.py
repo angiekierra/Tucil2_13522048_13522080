@@ -4,23 +4,22 @@
 
 import matplotlib.pyplot as plt
 
-def mid_point(point1,point2):
+def mid_point(point1, point2):
     return (point1[0] + point2[0]) / 2, (point1[1] + point2[1]) / 2
 
-def bezier_curve(controlpoints,iteration):
+def bezier_curve(controlpoints, iteration):
     if iteration == 0:
-        return controlpoints
+        return [controlpoints[0], mid_point(controlpoints[0], controlpoints[-1]), controlpoints[-1]]
     else:
-        
-        left_mid = mid_point(controlpoints[0],controlpoints[1])
-        right_mid = mid_point(controlpoints[1],controlpoints[2])
-        mids = mid_point(left_mid,right_mid)
+        left_mid = mid_point(controlpoints[0], controlpoints[1])
+        right_mid = mid_point(controlpoints[1], controlpoints[2])
+        mids = mid_point(left_mid, right_mid)
 
-        left_curve = [controlpoints[0],left_mid,mids]
-        right_curve = [mids,right_mid,controlpoints[-1]]
+        left_curve = [controlpoints[0], left_mid, mids]
+        right_curve = [mids, right_mid, controlpoints[-1]]
 
-        left = bezier_curve(left_curve,iteration-1)
-        right = bezier_curve(right_curve,iteration-1)
+        left = bezier_curve(left_curve, iteration - 1)
+        right = bezier_curve(right_curve, iteration - 1)
 
         return left + right
     
