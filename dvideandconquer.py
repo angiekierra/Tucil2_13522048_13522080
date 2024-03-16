@@ -24,7 +24,7 @@ def bezier_curve(controlpoints,iteration):
 
         return left + right
     
-test = [(1,2),(5,4),(7,2)]
+test = [(6,2),(2,4),(7,15)]
 it = 10
 res = bezier_curve(test,it)
 print(res)
