@@ -1,7 +1,4 @@
 
-# blum general
-
-
 import matplotlib.pyplot as plt
 
 def mid_point(point1, point2):
@@ -17,14 +14,13 @@ def bezier_curve(controlpoints, iteration):
 
         left_curve = [controlpoints[0], left_mid, mids]
         right_curve = [mids, right_mid, controlpoints[-1]]
-
         left = bezier_curve(left_curve, iteration - 1)
         right = bezier_curve(right_curve, iteration - 1)
 
         return left + right
     
 test = [(1,2),(5,4),(7,2)]
-it = 13
+it = 10
 res = bezier_curve(test,it)
 print(res)
 curve_points = bezier_curve(test, it)
