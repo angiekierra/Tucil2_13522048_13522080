@@ -1,44 +1,9 @@
-import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
-
-"""------------------FUNGSI BRUTE FORCE-------------------- """
-
-def bezier_brute_force(initial_points, num_of_iterations):
-    num_created_points = 2 ** num_of_iterations - 1
-    length = num_created_points + 2
-    final_points = np.zeros(length, dtype=tuple)
-    final_points[0] = initial_points[0]
-    for i in range(num_created_points):
-        t = (i + 1) / (num_created_points + 1)
-        x = ((1 - t) ** 2) * initial_points[0][0] + ((1-t) * t) * initial_points[1][0] + (t ** 2) * initial_points[2][0]
-        y = ((1 - t) ** 2) * initial_points[0][1] + ((1-t) * t) * initial_points[1][1] + (t ** 2) * initial_points[2][1]
-        final_points[i+1] = (x,y)
-    final_points[length-1] = initial_points[2]
-    return final_points
-
-"""------------------FUNGSI DIVIDE AND CONQUER (KHUSUS 3 TITIK)-------------------- """
 
 def mid_point(point1, point2):
     return (point1[0] + point2[0]) / 2, (point1[1] + point2[1]) / 2
 
-def bezier_dnc(controlpoints, iteration):
-    if iteration == 0:
-        return [controlpoints[0], mid_point(controlpoints[0], controlpoints[-1]), controlpoints[-1]]
-    else:
-        left_mid = mid_point(controlpoints[0], controlpoints[1])
-        right_mid = mid_point(controlpoints[1], controlpoints[2])
-        mids = mid_point(left_mid, right_mid)
-
-        left_curve = [controlpoints[0], left_mid, mids]
-        right_curve = [mids, right_mid, controlpoints[-1]]
-        left = bezier_dnc(left_curve, iteration - 1)
-        right = bezier_dnc(right_curve, iteration - 1)
-
-        return left + right
-    
-
-"""------------------FUNGSI DIVIDE AND CONQUER (UNTUK N TITIK)-------------------- """
 
 def n_bezier_dnc(control_points, num_of_iterations):
     if num_of_iterations == 1:
@@ -72,6 +37,31 @@ def get_subcontrol_points(control_points, subcontrol_points, counter):
         new_subcontrol_points[-(1 + counter)] = mid_points[-1]
         return get_subcontrol_points(mid_points, new_subcontrol_points, counter + 1)
     
+# Precompute results for each iteration
+def precompute_results_n_bezier(control_points, num_of_iterations):
+    results = []
+    for i in range(1, num_of_iterations + 1):
+        result_points = n_bezier_dnc(control_points, i)
+        results.append(result_points)
+    return results
 
+def animate_n_bezier(iteration, results, ax, run_time_per_iteration):
+    ax.clear()
+    result_points = results[iteration]
+    curve_x, curve_y = zip(*result_points)
+    ax.plot(curve_x, curve_y, marker='o', color='b')
+    ax.set_title(f"Iteration {iteration} - Runtime (per iteration): {run_time_per_iteration} ms")
+    ax.set_aspect('equal', 'box')
+    ax.grid(True)
 
+def animate_bezier_n_bezier(control_points, num_of_iterations, run_time):
+    results = precompute_results_n_bezier(control_points, num_of_iterations)
+    fig, ax = plt.subplots()
+    ani = FuncAnimation(fig, animate_n_bezier, frames=num_of_iterations, fargs=(results, ax, run_time), interval=1000, repeat=False)
+    plt.show()
 
+# Example usage:
+control_points = [(0, 0), (1, 1), (2, -1), (3, 0)]  # Example control points
+num_of_iterations = 5  # Example number of iterations
+
+animate_bezier_n_bezier(control_points, num_of_iterations,122)

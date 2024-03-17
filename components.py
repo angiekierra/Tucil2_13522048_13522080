@@ -65,8 +65,105 @@ def input_box(parent, n):
     dialog.wait_window()
     return control_points, iterations
 
+"""------------------FUNGSI VISUALISASI TITIK-------------------- """
+
+def plot_points(result,control,runtime):
+    curve_x, curve_y = zip(*result)
+    control_x, control_y = zip(*control)
+
+    plt.plot(curve_x, curve_y, label='Bezier Curve')
+    plt.plot(control_x, control_y, color='red', label='Control Points')
+    plt.text(-1.00, 0.1, 'Runtime: {} ms'.format(runtime), transform=plt.gca().transAxes, fontsize=10)
+    plt.title(f"Bezier Curve - Runtime (overall): {runtime} ms")
+    plt.xlabel('X')
+    plt.ylabel('Y')
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+
+def animate(iteration, controlpoints, ax, runtime,n):
+    ax.clear()
+    if (n ==1):
+        curve = bezier_brute_force(controlpoints,iteration)
+    elif (n==2):
+        curve = bezier_dnc(controlpoints, iteration)
+
+    
+    ax.plot(*zip(*curve), marker='o', color='b')
+    ax.plot(*zip(*controlpoints), marker='o', color='r')
+    ax.set_title(f"Iteration {iteration} - Runtime (overall): {runtime} ms")
+    ax.set_aspect('equal', 'box')
+    ax.grid(True)
 
 
+def animate_bezier(controlpoints, iteration, runtime_ms,n):
+    fig, ax = plt.subplots()
+    
+    def animate_wrapper(iteration):
+        animate(iteration, controlpoints, ax, runtime_ms,n)
+    
+    ani = FuncAnimation(fig, animate_wrapper, frames=iteration+1, interval=1000, repeat=False)
+    plt.show()
+
+def precompute_results_n_bezier(control_points, num_of_iterations):
+    results = []
+    for i in range(1, num_of_iterations + 1):
+        result_points = n_bezier_dnc(control_points, i)
+        results.append(result_points)
+    return results
+
+def animate_n_bezier(iteration, results, ax, control_points, runtime):
+    ax.clear()
+    result_points = results[iteration]
+    curve_x, curve_y = zip(*result_points)
+    ax.plot(*zip(*control_points), marker='o', color='r') 
+    ax.plot(curve_x, curve_y, marker='o', color='b', label='Bezier Curve')
+    control_x, control_y = zip(*control_points)
+    ax.scatter(control_x, control_y, color='r', label='Control Points')
+    ax.set_title(f"Iteration {iteration} - Runtime (overall): {runtime} ms")
+    ax.legend()
+    ax.set_aspect('equal', 'box')
+    ax.grid(True)
+
+def animate_bezier_n_bezier(control_points, num_of_iterations, run_time):
+    results = precompute_results_n_bezier(control_points, num_of_iterations)
+    fig, ax = plt.subplots()
+    ani = FuncAnimation(fig, animate_n_bezier, frames=num_of_iterations, fargs=(results, ax, control_points, run_time), interval=1000, repeat=False)
+    plt.show()
+
+
+def pop_up_normal_dnc(curve,control_points,runtime_ms,iteration):
+    new_window = tk.Toplevel()
+    new_window.title("Bezier Curve")
+    texts = "Pilih hasil keluaran"
+    label = tk.Label(new_window, text=texts, font=("Arial", 12), justify="center", anchor="center", fg="black", wraplength=500)
+    label.grid(row=0, column=0)
+    static = ttk.Button(new_window, text="Static Graph", command=lambda: plot_points(curve,control_points,runtime_ms))
+    static.grid(row=1, column=0)
+    animate1 = ttk.Button(new_window, text="Animation per iteration", command=lambda: animate_bezier(control_points, iteration,runtime_ms,2))
+    animate1.grid(row=2, column=0)
+
+def pop_up_brute(curve,control_points,runtime_ms,iteration):
+    new_window = tk.Toplevel()
+    new_window.title("Bezier Curve")
+    texts = "Pilih hasil keluaran"
+    label = tk.Label(new_window, text=texts, font=("Arial", 12), justify="center", anchor="center", fg="black", wraplength=500)
+    label.grid(row=0, column=0)
+    static = ttk.Button(new_window, text="Static Graph", command=lambda: plot_points(curve,control_points,runtime_ms))
+    static.grid(row=1, column=0)
+    animate1 = ttk.Button(new_window, text="Animation per iteration", command=lambda: animate_bezier(control_points, iteration,runtime_ms,1))
+    animate1.grid(row=2, column=0)
+
+def pop_up_n(curve,control_points,runtime_ms,iteration):
+    new_window = tk.Toplevel()
+    new_window.title("Bezier Curve")
+    texts = "Pilih hasil keluaran"
+    label = tk.Label(new_window, text=texts, font=("Arial", 12), justify="center", anchor="center", fg="black", wraplength=500)
+    label.grid(row=0, column=0)
+    static = ttk.Button(new_window, text="Static Graph", command=lambda: plot_points(curve,control_points,runtime_ms))
+    static.grid(row=1, column=0)
+    animate1 = ttk.Button(new_window, text="Animation per iteration", command=lambda: animate_bezier_n_bezier(control_points, iteration,runtime_ms))
+    animate1.grid(row=2, column=0)
 
     
 def normal_dnc(root):
@@ -79,18 +176,7 @@ def normal_dnc(root):
 
     pop_up_normal_dnc(curve,control_points,runtime_ms,iterations)
 
-    # pop_up(control_points,iterations,runtime_ms)
-
-def pop_up_normal_dnc(curve,control_points,runtime_ms,iteration):
-    new_window = tk.Toplevel()
-    new_window.title("Bezier Curve")
-    texts = "Pilih hasil keluaran"
-    label = tk.Label(new_window, text=texts, font=("Arial", 12), justify="center", anchor="center", fg="black", wraplength=500)
-    label.grid(row=0, column=0)
-    static = ttk.Button(new_window, text="Static Graph", command=lambda: plot_points(curve,control_points,runtime_ms))
-    static.grid(row=1, column=0)
-    animate1 = ttk.Button(new_window, text="Animation per iteration", command=lambda: animate_bezier(control_points, iteration,runtime_ms))
-    animate1.grid(row=2, column=0)
+    
 
 def brute_force(root):
     control_points, iterations = input_box(root, 3)
@@ -99,10 +185,8 @@ def brute_force(root):
     curve = bezier_brute_force(control_points,iterations)
     end_time = time.time()
 
-    plot_points(curve,control_points)
-
     runtime_ms = (end_time-start_time) * 1000
-    pop_up(control_points,iterations,runtime_ms)
+    pop_up_brute(curve,control_points,runtime_ms,iterations)
 
 def n_point_dnc(root):
     n = simpledialog.askinteger("Jumlah Titik Kontrol", "Masukkan jumlah titik kontrol (lebih dari 2)")
@@ -112,9 +196,6 @@ def n_point_dnc(root):
     curve = n_bezier_dnc(control_points,iterations)
     end_time = time.time()
 
-    plot_points(curve,control_points)
-
     runtime_ms = (end_time-start_time) * 1000
-    pop_up(control_points,iterations,runtime_ms)
-
+    pop_up_n(curve,control_points,runtime_ms,iterations)
 
