@@ -1,8 +1,8 @@
-import numpy as np
+import matplotlib.pyplot as plt
 
-initial_points = np.zeros(3, dtype=tuple)
+initial_points = []
 for i in range(3):
-    initial_points[i] = tuple(map(int, input().split(',')))
+    initial_points.append(tuple(map(int, input().split(','))))
 
 num_of_iterations =  int(input("Jumlah iterasi: "))
 
@@ -10,7 +10,7 @@ def bezier_brute_force(initial_points, num_of_iterations):
     num_created_points = 2 ** num_of_iterations - 1
     # print(num_of_points)
     length = num_created_points + 2
-    final_points = np.zeros(length, dtype=tuple)
+    final_points = [(0, 0)] * length
     final_points[0] = initial_points[0]
     for i in range(num_created_points):
         t = (i + 1) / (num_created_points + 1)
@@ -21,6 +21,12 @@ def bezier_brute_force(initial_points, num_of_iterations):
     return final_points
 
 final_points = bezier_brute_force(initial_points, num_of_iterations)
+
+length = len(final_points)
+for i in range(len(length)):
+    plt.plot(*zip(final_points[i]), color='red', marker='o')
+    plt.pause(0.1)
+plt.show()
 
 for x in final_points:
     print(x)
