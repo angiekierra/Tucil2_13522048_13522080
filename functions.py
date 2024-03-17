@@ -76,29 +76,37 @@ def get_subcontrol_points(control_points, subcontrol_points, counter):
 
 """------------------FUNGSI VISUALISASI TITIK-------------------- """
 
-def plot_points(result,control):
+def plot_points(result,control,runtime):
     curve_x, curve_y = zip(*result)
     control_x, control_y = zip(*control)
 
     plt.plot(curve_x, curve_y, label='Bezier Curve')
     plt.scatter(control_x, control_y, color='red', label='Control Points')
-    plt.title('Bezier Curve')
+    plt.text(-1.00, 0.1, 'Runtime: {} ms'.format(runtime), transform=plt.gca().transAxes, fontsize=10)
+    plt.title(f"Bezier Curve - Runtime (overall): {runtime} ms")
     plt.xlabel('X')
     plt.ylabel('Y')
     plt.legend()
     plt.grid(True)
     plt.show()
 
-def animate(iteration, controlpoints, ax):
+def animate(iteration, controlpoints, ax, runtime):
     ax.clear()
     curve = bezier_dnc(controlpoints, iteration)
     ax.plot(*zip(*curve), marker='o', color='b')
     ax.plot(*zip(*controlpoints), marker='o', color='r')
-    ax.set_title(f"Iteration {iteration}")
+    ax.set_title(f"Iteration {iteration} - Runtime (overall): {runtime} ms")
     ax.set_aspect('equal', 'box')
     ax.grid(True)
 
-def animate_bezier(controlpoints, iteration):
+
+def animate_bezier(controlpoints, iteration, runtime_ms):
     fig, ax = plt.subplots()
-    ani = FuncAnimation(fig, animate, frames=iteration+1, fargs=(controlpoints, ax), interval=1000, repeat=False)
+    
+    def animate_wrapper(iteration):
+        animate(iteration, controlpoints, ax, runtime_ms)
+    
+    ani = FuncAnimation(fig, animate_wrapper, frames=iteration+1, interval=1000, repeat=False)
     plt.show()
+
+
