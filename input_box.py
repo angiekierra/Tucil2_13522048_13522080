@@ -17,37 +17,37 @@ class InputBox(tk.Toplevel):
         self.main_frame = ttk.Frame(self, style='InputBox.TFrame')
         self.main_frame.pack(padx=10, pady=10)
 
-        # Title and Instructions
+        # TITLE
         self.title_input = tk.Label(self.main_frame, text="INPUT BEZIER", font=("Arial", 24, "bold"))
         self.title_input.grid(row=0, column=0, columnspan=4, sticky=tk.E + tk.W, padx=5, pady=5)
         self.petunjuk = tk.Label(self.main_frame, text="Masukkan posisi titik kontrol dan jumlah iterasi", background='#F8C4CC', font=("Arial", 12))
         self.petunjuk.grid(row=1, column=0, columnspan=4, sticky=tk.E + tk.W, padx=5, pady=5)
 
-        # Control Points Labels and Entries
+        # INPUT CONTROL POINTS
         self.entry_widgets = []
         for i in range(0, n):
             temp = []
             # X
-            label_x = ttk.Label(self.main_frame, text="X" + str(i+1) + ":")  # Corrected
+            label_x = ttk.Label(self.main_frame, text="X" + str(i+1) + ":")  
             label_x.grid(row=2+i, column=0, sticky=tk.E, padx=5, pady=5)
             entry_x = ttk.Entry(self.main_frame)
             entry_x.grid(row=2+i, column=1, padx=5, pady=5)
             temp.append(entry_x)
             # Y
-            label_y = ttk.Label(self.main_frame, text="Y" + str(i+1) + ":")  # Corrected
+            label_y = ttk.Label(self.main_frame, text="Y" + str(i+1) + ":") 
             label_y.grid(row=2+i, column=2, sticky=tk.E, padx=5, pady=5)
             entry_y = ttk.Entry(self.main_frame)
             entry_y.grid(row=2+i, column=3, padx=5, pady=5)
             temp.append(entry_y)
             self.entry_widgets.append((temp[0], temp[1]))
 
-        # Iteration
+        # NUMBER OF ITERATIONS
         self.iteration_label = ttk.Label(self.main_frame, text="Jumlah Iterasi:")
         self.iteration_label.grid(row=n + 2, columnspan=2, sticky=tk.E + tk.W, padx=5, pady=5)
         self.iteration_input = ttk.Spinbox(self.main_frame, from_=1, to=1e10, increment=1)
         self.iteration_input.grid(row=n + 2, column=2, columnspan=2, sticky=tk.E + tk.W, padx=5, pady=5)
 
-        # Submit Button
+        # SUBMIT
         self.submit_button = ttk.Button(self.main_frame, text="Submit", command=self.submit, style='InputBox.TButton')
         self.submit_button.grid(row=n + 3, column=0, columnspan=4, sticky=tk.E + tk.W, padx=5, pady=5)
 
