@@ -1,5 +1,7 @@
+import time
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk,simpledialog
+from functions import *
 
 def input_box(parent, n):
     control_points = []
@@ -62,19 +64,56 @@ def input_box(parent, n):
     dialog.wait_window()
     return control_points, iterations
 
+
+def confirm_animating(control_points, iteration):
+    animate_bezier(control_points, iteration)
+
+def pop_up(control_points, iteration, time):
+    new_window = tk.Toplevel()
+    new_window.title("Bezier Curve")
+    texts = "Runtime: " + str(time) + "ms"
+    label = tk.Label(new_window, text=texts, bg="#ffe5ec", font=("Arial", 12), justify="center", anchor="center", fg="black", wraplength=500)
+    label.grid(row=0, column=0)
+
+    submit_button = ttk.Button(new_window, text="Generate", command=lambda: confirm_animating(control_points, iteration))
+    submit_button.grid(row=1, column=0)
+
 def normal_dnc(root):
     control_points, iterations = input_box(root, 3)
 
-    
-    print("Control Points:", control_points)
-    print("Iterations:", iterations)
-# # Example usage
-# if __name__ == "__main__":
-#     root = tk.Tk()
-#     control_points, iterations = input_box(root, 3)
-#     print("Control Points:", control_points)
-#     print("Iterations:", iterations)
-#     root.mainloop()
-# root = tk.Tk()
-# test()
-# root.mainloop()
+    start_time = time.time()
+    curve = bezier_dnc(control_points,iterations)
+    end_time = time.time()
+
+    plot_points(curve,control_points)
+
+    runtime_ms = (end_time-start_time) * 1000
+    pop_up(control_points,iterations,runtime_ms)
+
+
+def brute_force(root):
+    control_points, iterations = input_box(root, 3)
+
+    start_time = time.time()
+    curve = bezier_brute_force(control_points,iterations)
+    end_time = time.time()
+
+    plot_points(curve,control_points)
+
+    runtime_ms = (end_time-start_time) * 1000
+    pop_up(control_points,iterations,runtime_ms)
+
+def n_point_dnc(root):
+    n = simpledialog.askinteger("Jumlah Titik Kontrol", "Masukkan jumlah titik kontrol (lebih dari 2)")
+    control_points, iterations = input_box(root, n)
+
+    start_time = time.time()
+    curve = n_bezier_dnc(control_points,iterations)
+    end_time = time.time()
+
+    plot_points(curve,control_points)
+
+    runtime_ms = (end_time-start_time) * 1000
+    pop_up(control_points,iterations,runtime_ms)
+
+
