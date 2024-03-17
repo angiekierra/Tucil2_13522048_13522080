@@ -10,7 +10,6 @@ class InputBox(tk.Toplevel):
         # STYLING
         self.style = ttk.Style()
         self.style.configure('InputBox.TFrame', background='#f8c4cc')  
-        self.style.configure('InputBox.TLabel', padding=10)  
         self.style.configure('InputBox.TSpinbox', padding=5)  
         self.style.configure('InputBox.TButton', padding=5)  
 
@@ -52,27 +51,43 @@ class InputBox(tk.Toplevel):
         self.submit_button.grid(row=n + 3, column=0, columnspan=4, sticky=tk.E + tk.W, padx=5, pady=5)
 
     def submit(self):
+        global control_points
+        global iterations
+        
         control_points = []
         for entry_x, entry_y in self.entry_widgets:
             x_value = entry_x.get()
             y_value = entry_y.get()
-            control_points.append((x_value, y_value))
-        iteration = self.iteration_input.get()
+            control_points.append(int(x_value), int(y_value))
+        iterations = int(self.iteration_input.get())
 
-        for point in control_points:
-            print("Control Point:", point)
-        print("Jumlah Iterasi:", iteration)
         self.destroy()
 
 
-if __name__ == "__main__":
-    root = tk.Tk()
-    root.title("Example")
+# Example usage:
+root = tk.Tk()
 
-    def open_input_box():
-        input_box = InputBox(root,8)
+# Initialize global variables
+control_points = []
+iterations = 0
+
+def plot_bezier_curve():
+    # Your plot code using global control_points and iterations
+    pass
+
+def open_input_dialog():
+    global control_points
+    global iterations
     
-    open_button = tk.Button(root, text="Open Input Box", command=open_input_box)
-    open_button.pack()
+    dialog = InputBox(root, 3)  # Assuming 3 control points
+    root.wait_window(dialog)
+    # After dialog is closed, use updated global variables
+    print("Control Points:", control_points)
+    print("Iterations:", iterations)
+    plot_bezier_curve()
 
-    root.mainloop()
+# Button to open input dialog
+btn_open_dialog = tk.Button(root, text="Open Input Dialog", command=open_input_dialog)
+btn_open_dialog.pack()
+
+root.mainloop()
