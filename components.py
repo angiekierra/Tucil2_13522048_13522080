@@ -187,7 +187,7 @@ def pop_up_normal_dnc(curve,control_points,runtime_ms,iteration):
     static.grid(row=1, column=0)
     animate1 = ttk.Button(new_window, text="Animation per iteration", command=lambda: animate_bezier(control_points, iteration,runtime_ms,2))
     animate1.grid(row=2, column=0)
-    animate2 = ttk.Button(new_window, text="Animation per points", command=lambda: plot_per_points_dnc(curve,control_points,runtime_ms))
+    animate2 = ttk.Button(new_window, text="Animation per points", command=lambda: plot_per_points_dnc(control_points,iteration,runtime_ms))
     animate2.grid(row=3, column=0)
 
 def pop_up_brute(curve,control_points,runtime_ms,iteration):
