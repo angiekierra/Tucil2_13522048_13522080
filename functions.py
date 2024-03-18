@@ -52,7 +52,7 @@ def n_bezier_dnc(control_points, num_of_iterations):
         subcontrol_points[0] = control_points[0]
         subcontrol_points[-1] = control_points[-1]
         subcontrol_points = get_subcontrol_points(control_points, subcontrol_points, 1)
-        # print(subcontrol_points)
+        
         left = n_bezier_dnc(subcontrol_points[:len(control_points)], num_of_iterations - 1)
         right = n_bezier_dnc(subcontrol_points[-len(control_points):], num_of_iterations - 1)
         return left + right

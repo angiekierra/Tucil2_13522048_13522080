@@ -205,12 +205,12 @@ def animate_n_bezier(iteration, results, ax, control_points, runtime):
     ax.plot(curve_x, curve_y, marker='o', color='b', label='Bezier Curve')
     control_x, control_y = zip(*control_points)
     ax.scatter(control_x, control_y, color='r', label='Control Points')
-    ax.set_title(f"Iteration {iteration} - Runtime (overall): {runtime} ms")
+    ax.set_title(f"Iteration {iteration+1} - Runtime (overall): {runtime} ms")
     ax.legend()
     ax.set_aspect('equal', 'box')
     ax.grid(True)
 
-def animate_bezier_n_bezier(control_points, num_of_iterations, run_time):
+def animate_bezier_ndnc(control_points, num_of_iterations, run_time):
     results = precompute_results_n_bezier(control_points, num_of_iterations)
     fig, ax = plt.subplots()
     ani = FuncAnimation(fig, animate_n_bezier, frames=num_of_iterations, fargs=(results, ax, control_points, run_time), interval=1000, repeat=False)
@@ -252,7 +252,7 @@ def pop_up_n(curve,control_points,runtime_ms,iteration):
     label.grid(row=0, column=0)
     static = ttk.Button(new_window, text="Static Graph", command=lambda: plot_points(curve,control_points,runtime_ms))
     static.grid(row=1, column=0)
-    animate1 = ttk.Button(new_window, text="Animation per iteration", command=lambda: animate_bezier_n_bezier(control_points, iteration,runtime_ms))
+    animate1 = ttk.Button(new_window, text="Animation per iteration", command=lambda: animate_bezier_ndnc(control_points, iteration,runtime_ms))
     animate1.grid(row=2, column=0)
     animate2 = ttk.Button(new_window, text="Animation per points", command=lambda: plot_per_points_ndnc(control_points,iteration,runtime_ms))
     animate2.grid(row=3, column=0)
