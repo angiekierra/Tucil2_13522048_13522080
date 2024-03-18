@@ -52,15 +52,17 @@ for i in range(num_control_points):
 
 num_of_iterations = int(input("Jumlah Iterasi: "))
 
-plt.figure()
-final_curve = bezier_dnc(control_points, num_of_iterations)
-plt.show()
-for x in final_curve:
-    print(x)
+# plt.figure()
+# final_curve = bezier_dnc(control_points, num_of_iterations)
+# plt.show()
+# for x in final_curve:
+#     print(x)
 
-def plot_per_points_ndnc(control_points,iterations):
+def plot_per_points_ndnc(control_points, num_of_iterations, runtime):
+    fig, ax = plt.subplots()
+    
     def bezier_dnc(control_points, num_of_iterations):
-        plt.plot(*zip(*control_points), color = 'grey', marker='o')
+        ax.plot(*zip(*control_points), color='grey', marker='o')
         plt.pause(0.5)
         if num_of_iterations == 1:
             subcontrol_points = [(0, 0)] * (len(control_points) * 2 - 3)
@@ -71,10 +73,10 @@ def plot_per_points_ndnc(control_points,iterations):
             for x in new_subcontrol_points:
                 if x not in control_points:
                     points_plotted.append(x)
-            plt.plot(*zip(*points_plotted), color = 'grey', marker='o')
+            ax.plot(*zip(*points_plotted), color='grey', marker='o')
             plt.pause(0.5)
             final_points = [control_points[0]] + [new_subcontrol_points[(len(subcontrol_points)-1)//2]] + [control_points[-1]]
-            plt.plot(*zip(*final_points), color = 'red', marker='o')
+            ax.plot(*zip(*final_points), color='red', marker='o')
             plt.pause(0.5)
             return final_points
         else:
@@ -86,7 +88,15 @@ def plot_per_points_ndnc(control_points,iterations):
             right = bezier_dnc(subcontrol_points[-len(control_points):], num_of_iterations - 1)
             return left + right
         
-    
-    plt.figure()
-    final_curve = bezier_dnc(control_points, num_of_iterations)
+    custom_legend = [
+        plt.Line2D([0], [0], color='grey', marker='o', linestyle='', label='Control Points'),
+        plt.Line2D([0], [0], color='red', marker='o', linestyle='', label='Bezier Curve')
+    ]
+    ax.set_title(f"Iteration: {num_of_iterations} - Runtime (overall): {runtime} ms")
+    ax.legend(handles=custom_legend)
+    ax.set_aspect('equal', 'box')
+    ax.grid(True)
+    bezier_dnc(control_points, num_of_iterations)
     plt.show()
+
+plot_per_points_ndnc(control_points, num_of_iterations,500)

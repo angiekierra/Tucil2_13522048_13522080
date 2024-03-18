@@ -149,6 +149,47 @@ def plot_per_points_dnc(controlpoints, num_iterations,runtime):
     plt.grid(True)
     plt.show()  
 
+def plot_per_points_ndnc(control_points, num_of_iterations, runtime):
+    fig, ax = plt.subplots()
+    
+    def bezier_dnc(control_points, num_of_iterations):
+        ax.plot(*zip(*control_points), color='grey', marker='o')
+        plt.pause(0.5)
+        if num_of_iterations == 1:
+            subcontrol_points = [(0, 0)] * (len(control_points) * 2 - 3)
+            subcontrol_points[0] = control_points[0]
+            subcontrol_points[-1] = control_points[-1]
+            new_subcontrol_points = get_subcontrol_points(control_points, subcontrol_points, 0)
+            points_plotted = []
+            for x in new_subcontrol_points:
+                if x not in control_points:
+                    points_plotted.append(x)
+            ax.plot(*zip(*points_plotted), color='grey', marker='o')
+            plt.pause(0.5)
+            final_points = [control_points[0]] + [new_subcontrol_points[(len(subcontrol_points)-1)//2]] + [control_points[-1]]
+            ax.plot(*zip(*final_points), color='red', marker='o')
+            plt.pause(0.5)
+            return final_points
+        else:
+            subcontrol_points = [(0, 0)] * (len(control_points) * 2 - 1)
+            subcontrol_points[0] = control_points[0]
+            subcontrol_points[-1] = control_points[-1]
+            subcontrol_points = get_subcontrol_points(control_points, subcontrol_points, 1)
+            left = bezier_dnc(subcontrol_points[:len(control_points)], num_of_iterations - 1)
+            right = bezier_dnc(subcontrol_points[-len(control_points):], num_of_iterations - 1)
+            return left + right
+        
+    custom_legend = [
+        plt.Line2D([0], [0], color='grey', marker='o', linestyle='', label='Control Points'),
+        plt.Line2D([0], [0], color='red', marker='o', linestyle='', label='Bezier Curve')
+    ]
+    ax.set_title(f"Iteration: {num_of_iterations} - Runtime (overall): {runtime} ms")
+    ax.legend(handles=custom_legend)
+    ax.set_aspect('equal', 'box')
+    ax.grid(True)
+    bezier_dnc(control_points, num_of_iterations)
+    plt.show()
+
 def precompute_results_n_bezier(control_points, num_of_iterations):
     results = []
     for i in range(1, num_of_iterations + 1):
@@ -213,7 +254,8 @@ def pop_up_n(curve,control_points,runtime_ms,iteration):
     static.grid(row=1, column=0)
     animate1 = ttk.Button(new_window, text="Animation per iteration", command=lambda: animate_bezier_n_bezier(control_points, iteration,runtime_ms))
     animate1.grid(row=2, column=0)
-  
+    animate2 = ttk.Button(new_window, text="Animation per points", command=lambda: plot_per_points_ndnc(control_points,iteration,runtime_ms))
+    animate2.grid(row=3, column=0)
 
 """------------------BUTTON INITIALIZE-------------------- """
 
