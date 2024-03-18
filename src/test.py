@@ -57,3 +57,36 @@ final_curve = bezier_dnc(control_points, num_of_iterations)
 plt.show()
 for x in final_curve:
     print(x)
+
+def plot_per_points_ndnc(control_points,iterations):
+    def bezier_dnc(control_points, num_of_iterations):
+        plt.plot(*zip(*control_points), color = 'grey', marker='o')
+        plt.pause(0.5)
+        if num_of_iterations == 1:
+            subcontrol_points = [(0, 0)] * (len(control_points) * 2 - 3)
+            subcontrol_points[0] = control_points[0]
+            subcontrol_points[-1] = control_points[-1]
+            new_subcontrol_points = get_subcontrol_points(control_points, subcontrol_points, 0)
+            points_plotted = []
+            for x in new_subcontrol_points:
+                if x not in control_points:
+                    points_plotted.append(x)
+            plt.plot(*zip(*points_plotted), color = 'grey', marker='o')
+            plt.pause(0.5)
+            final_points = [control_points[0]] + [new_subcontrol_points[(len(subcontrol_points)-1)//2]] + [control_points[-1]]
+            plt.plot(*zip(*final_points), color = 'red', marker='o')
+            plt.pause(0.5)
+            return final_points
+        else:
+            subcontrol_points = [(0, 0)] * (len(control_points) * 2 - 1)
+            subcontrol_points[0] = control_points[0]
+            subcontrol_points[-1] = control_points[-1]
+            subcontrol_points = get_subcontrol_points(control_points, subcontrol_points, 1)
+            left = bezier_dnc(subcontrol_points[:len(control_points)], num_of_iterations - 1)
+            right = bezier_dnc(subcontrol_points[-len(control_points):], num_of_iterations - 1)
+            return left + right
+        
+    
+    plt.figure()
+    final_curve = bezier_dnc(control_points, num_of_iterations)
+    plt.show()

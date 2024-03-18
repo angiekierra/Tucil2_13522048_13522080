@@ -8,6 +8,7 @@ num_of_iterations =  int(input("Jumlah iterasi: "))
 
 def bezier_brute_force(initial_points, num_of_iterations):
     num_created_points = 2 ** num_of_iterations - 1
+    # print(num_of_points)
     length = num_created_points + 2
     final_points = [(0, 0)] * length
     final_points[0] = initial_points[0]
@@ -19,15 +20,51 @@ def bezier_brute_force(initial_points, num_of_iterations):
     final_points[length-1] = initial_points[2]
     return final_points
 
-control_points = [(0, 0), (1, 1), (2, -1), (3, 0)] 
+# final_points = bezier_brute_force(initial_points, num_of_iterations)
+# # print(final_points)
+# length = len(final_points)
+# # print(length)
+# for i in range(length):
+#     plt.plot(*zip(final_points[i]), color='red', marker='o')
+#     plt.pause(0.1)
+# plt.show()
 
-final_points = bezier_brute_force(control_points,10)
+# for x in final_points:
+#     print(x)
 
+final_points = bezier_brute_force(initial_points, num_of_iterations)
 length = len(final_points)
-for i in range(len(length)):
-    plt.plot(*zip(final_points[i]), color='red', marker='o')
-    plt.pause(0.1)
-plt.show()
 
-for x in final_points:
-    print(x)
+
+def plot_by_point(controlpoint,result):
+    for i in range(len(result)):
+        plt.plot(*zip(result[i]), color='red', marker='o')
+        if i < length - 1:
+            plt.plot([result[i][0], result[i+1][0]], [result[i][1], result[i+1][1]], color='r')
+        plt.pause(0.1)
+    plt.plot(*zip(controlpoint), color='b', marker='o')
+
+
+def plot_per_points(result, control, runtime):
+    curve_x, curve_y = [], []
+    control_x, control_y = zip(*control)
+
+    plt.plot(control_x, control_y, color='red', label='Control Points')
+
+    plt.title(f"Bezier Curve - Runtime (overall): {runtime} ms")
+    plt.xlabel('X')
+    plt.ylabel('Y')
+    plt.legend()
+    plt.grid(True)
+
+    for i in range(len(result)):
+        curve_x.append(result[i][0])
+        curve_y.append(result[i][1])
+        plt.plot(curve_x, curve_y, marker='o', color='b')
+        if i > 0:
+            plt.plot([result[i-1][0], result[i][0]], [result[i-1][1], result[i][1]], color='b')
+        plt.pause(0.3)  
+    plt.show()
+
+
+plt.show()
