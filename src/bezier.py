@@ -33,11 +33,6 @@ def bezier_brute_force(initial_points, num_of_iterations):
 
 final_points = bezier_brute_force(initial_points, num_of_iterations)
 length = len(final_points)
-<<<<<<< HEAD
-for i in range(length):
-    plt.plot(*zip(final_points[i]), color='red', marker='o')
-    plt.pause(0.1)
-=======
 
 
 def plot_by_point(controlpoint,result):
@@ -71,5 +66,4 @@ def plot_per_points(result, control, runtime):
     plt.show()
 
 
->>>>>>> a4e54c3b6f117721068c9c40770ce951f3be1de4
 plt.show()
