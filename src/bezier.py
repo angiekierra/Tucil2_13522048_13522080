@@ -8,7 +8,6 @@ num_of_iterations =  int(input("Jumlah iterasi: "))
 
 def bezier_brute_force(initial_points, num_of_iterations):
     num_created_points = 2 ** num_of_iterations - 1
-    # print(num_of_points)
     length = num_created_points + 2
     final_points = [(0, 0)] * length
     final_points[0] = initial_points[0]
@@ -20,7 +19,9 @@ def bezier_brute_force(initial_points, num_of_iterations):
     final_points[length-1] = initial_points[2]
     return final_points
 
-final_points = bezier_brute_force(initial_points, num_of_iterations)
+control_points = [(0, 0), (1, 1), (2, -1), (3, 0)] 
+
+final_points = bezier_brute_force(control_points,10)
 
 length = len(final_points)
 for i in range(len(length)):

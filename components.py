@@ -73,7 +73,6 @@ def plot_points(result,control,runtime):
 
     plt.plot(curve_x, curve_y, label='Bezier Curve')
     plt.plot(control_x, control_y, color='red', label='Control Points')
-    plt.text(-1.00, 0.1, 'Runtime: {} ms'.format(runtime), transform=plt.gca().transAxes, fontsize=10)
     plt.title(f"Bezier Curve - Runtime (overall): {runtime} ms")
     plt.xlabel('X')
     plt.ylabel('Y')
@@ -164,8 +163,7 @@ def pop_up_n(curve,control_points,runtime_ms,iteration):
     static.grid(row=1, column=0)
     animate1 = ttk.Button(new_window, text="Animation per iteration", command=lambda: animate_bezier_n_bezier(control_points, iteration,runtime_ms))
     animate1.grid(row=2, column=0)
-
-    
+  
 def normal_dnc(root):
     control_points, iterations = input_box(root, 3)
 
@@ -175,9 +173,7 @@ def normal_dnc(root):
     runtime_ms = (end_time-start_time) * 1000
 
     pop_up_normal_dnc(curve,control_points,runtime_ms,iterations)
-
-    
-
+ 
 def brute_force(root):
     control_points, iterations = input_box(root, 3)
 

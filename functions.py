@@ -7,7 +7,7 @@ from matplotlib.animation import FuncAnimation
 def bezier_brute_force(initial_points, num_of_iterations):
     num_created_points = 2 ** num_of_iterations - 1
     length = num_created_points + 2
-    final_points = np.zeros(length, dtype=tuple)
+    final_points = [(0, 0)] * length
     final_points[0] = initial_points[0]
     for i in range(num_created_points):
         t = (i + 1) / (num_created_points + 1)
