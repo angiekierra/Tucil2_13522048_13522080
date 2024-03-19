@@ -4,6 +4,7 @@ from tkinter import ttk,simpledialog
 from functions import *
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
+"""------------------MAIN INPUT BOX-------------------- """
 def input_box(parent, n):
     control_points = []
     iterations = 0
