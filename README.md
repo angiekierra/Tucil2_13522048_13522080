@@ -49,7 +49,15 @@ This project aims to demonstrate the generation of Bézier curves using both the
 
 
 ## Usage
-To try the program, simply navigate to the src directory by running cd src, then execute python main.py. You will have several options for choosing which algorithm to use and which visualization to display the results.
+To try the program, simply navigate to the src directory by running 
+```
+cd src
+```
+then execute 
+```
+python main.py
+```
+You will have several options for choosing which algorithm to use and which visualization to display the results.
 
 
 ## Project Status
