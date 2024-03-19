@@ -41,6 +41,8 @@ def bezier_dnc(controlpoints, iteration):
 """------------------FUNGSI DIVIDE AND CONQUER (UNTUK N TITIK)-------------------- """
 
 def n_bezier_dnc(control_points, num_of_iterations):
+    if num_of_iterations == 0:
+        return [control_points[0], control_points[-1]]
     if num_of_iterations == 1:
         subcontrol_points = [(0, 0)] * (len(control_points) * 2 - 1)
         subcontrol_points[0] = control_points[0]
