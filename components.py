@@ -150,11 +150,9 @@ def plot_per_points_dnc(controlpoints, num_iterations,runtime):
     plt.show()  
 
 def plot_per_points_ndnc(control_points, num_of_iterations, runtime):
-    fig, ax = plt.subplots()
+    _, ax = plt.subplots()
     
     def bezier_dnc(control_points, num_of_iterations):
-        ax.plot(*zip(*control_points), color='grey', marker='o')
-        plt.pause(0.5)
         if num_of_iterations == 1:
             subcontrol_points = [(0, 0)] * (len(control_points) * 2 - 3)
             subcontrol_points[0] = control_points[0]
@@ -175,6 +173,8 @@ def plot_per_points_ndnc(control_points, num_of_iterations, runtime):
             subcontrol_points[0] = control_points[0]
             subcontrol_points[-1] = control_points[-1]
             subcontrol_points = get_subcontrol_points(control_points, subcontrol_points, 1)
+            ax.plot(*zip(*subcontrol_points), color='grey', marker='o')
+            plt.pause(0.5)
             left = bezier_dnc(subcontrol_points[:len(control_points)], num_of_iterations - 1)
             right = bezier_dnc(subcontrol_points[-len(control_points):], num_of_iterations - 1)
             return left + right
@@ -187,6 +187,8 @@ def plot_per_points_ndnc(control_points, num_of_iterations, runtime):
     ax.legend(handles=custom_legend)
     ax.set_aspect('equal', 'box')
     ax.grid(True)
+    ax.plot(*zip(*control_points), color='grey', marker='o')
+    plt.pause(0.5)
     bezier_dnc(control_points, num_of_iterations)
     plt.show()
 
