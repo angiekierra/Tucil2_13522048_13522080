@@ -1,5 +1,5 @@
 # Tucil2_13522048_13522080
-> Outline a brief description of your project.
+> Generating Bézier curves with bruteforce and divide and conquer approaches
 
 ## Table of Contents
 * [General Info](#general-information)
@@ -10,79 +10,60 @@
 * [Usage](#usage)
 * [Project Status](#project-status)
 * [Room for Improvement](#room-for-improvement)
-* [Acknowledgements](#acknowledgements)
-* [Contact](#contact)
-<!-- * [License](#license) -->
+* [Authors](#authors)
 
 
 ## General Information
-- Provide general information about your project here.
-- What problem does it (intend to) solve?
-- What is the purpose of your project?
-- Why did you undertake it?
-<!-- You don't have to answer all the questions - just the ones relevant to your project. -->
+Bézier curve is a smooth curve defined by control points. A Bézier curve is said to have order n if it is defined by n+1 points. This curve has many applications, such as in pen tools, crafting unique fonts, creating smooth and realistic animations, and more.
+
+This project aims to demonstrate the generation of Bézier curves using both the Mid-Point Algorithm and the direct approach involving a formula. Subsequently, algorithm complexity analysis is conducted to determine whether the Mid-Point Algorithm is more efficient for the curve's generation. 
 
 
 ## Technologies Used
-- Tech 1 - version 1.0
-- Tech 2 - version 2.0
-- Tech 3 - version 3.0
+- Python - version 3.11.5
 
 
 ## Features
-List the ready features here:
-- Awesome feature 1
-- Awesome feature 2
-- Awesome feature 3
+- Bézier curve generation with Mid-Point Algorithm
+- Bézier curve generation with direct formula
+- Graphical User Interface for receiving inputs and display results
 
 
 ## Screenshots
-![Example screenshot](./img/screenshot.png)
-<!-- If you have screenshots you'd like to share, include them here. -->
+![Front Page](./img/front_page.png)
+![Input](<./img/input.png>)
+![Iteration 3](./img/iteration-3.png)
+![Iteration 5](./img/iteration-5.png)
 
 
 ## Setup
-What are the project requirements/dependencies? Where are they listed? A requirements.txt or a Pipfile.lock file perhaps? Where is it located?
-
-Proceed to describe how to install / setup one's local environment / get started with the project.
+1. Install Python [here](https://www.python.org/downloads/)
+2. Clone the repository using one of the following commands:
+    ```
+    $ git clone https://github.com/angiekierra/Tucil1_13522048.git
+    ```
+    or
+    ```
+    $ git clone git@github.com:angiekierra/Tucil1_13522048.git
+    ```
 
 
 ## Usage
-How does one go about using it?
-Provide various use cases and code examples here.
-
-`write-your-code-here`
+To try the program, simply run `python main.py` in the root directory. You will have several options for choosing which algorithm to use and which visualization to display the results.
 
 
 ## Project Status
-Project is: _in progress_ / _complete_ / _no longer being worked on_. If you are no longer working on it, provide reasons why.
+Project is: _complete_
 
 
 ## Room for Improvement
-Include areas you believe need improvement / could be improved. Also add TODOs for future development.
-
-Room for improvement:
-- Improvement to be done 1
-- Improvement to be done 2
-
-To do:
-- Feature to be added 1
-- Feature to be added 2
+- Enhance the visualization of the Mid-Point Algorithm to display the generation of individual points.
+- Integrate the GUI into a single window for better organization and user experience.
+- Improve error handling and user feedback to provide a smoother and more robust user experience.
 
 
-## Acknowledgements
-Give credit here.
-- This project was inspired by...
-- This project was based on [this tutorial](https://www.example.com).
-- Many thanks to...
-
-
-## Contact
-Created by [@flynerdpl](https://www.flynerd.pl/) - feel free to contact me!
-
-
-<!-- Optional -->
-<!-- ## License -->
-<!-- This project is open source and available under the [... License](). -->
-
-<!-- You don't have to include all sections - just the one's relevant to your project -->
+## Authors
+| NIM                  | Nama      |
+| --------------------- | -------- |
+| 13522048 | [Angelica Kierra Ninta Gurning](https://github.com/angiekierra) |
+| 13522080 | [Julian Chandra Sutadi](https://github.com/julianchandras) |
